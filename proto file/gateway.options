@@ -1,0 +1,22 @@
+# This file defines the nanopb-specific options for the messages defined
+# in gateway.proto.
+#
+# If you come from high-level programming background, the hardcoded
+# maximum lengths may disgust you. However, if your microcontroller only
+# has a few kB of ram to begin with, setting reasonable limits for
+# filenames is ok.
+#
+# On the other hand, using the callback interface, it is not necessary
+# to set a limit on the number of files in the response.
+
+Return_Common_Msg.Error_Msg  	max_size:50
+Gateway_Register.Mac_Id 		max_size:12
+Gateway_Link.Mac_Id				max_size:12
+Upgrade_Info_Param.Upgrade_Url	max_size:200
+Term_Info.Term_ID				max_size:12
+Com_Messgage.MSG				max_size:50
+Feed_Rule.Rule					max_size:200
+Gateway_Upgrade_File.Version	max_size:20
+Gateway_Upgrade_File.Url		max_size:200
+Term_Upgrade_File.Url			max_size:200
+Recode_List.Time				max_size:20

@@ -1,0 +1,20 @@
+diff a/2.gateway/stm32f407/applications/cmd_handle.c b/2.gateway/stm32f407/applications/cmd_handle.c	(rejected hunks)
+@@ -79,13 +79,18 @@
+ 			/*--------------------------------------------------------------------------------------------------------*/
+ 			/*--------------------------------------------------------------------------------------------------------*/
+ 			case CMD_SVR_QUERY_DEVSETTING:																	/*��ѯ�豸ϵͳ����*/
++				sendDevParams();
+ 				break;
+ 			case CMD_SVR_QUERY_DEV_STATUS:																	/*��ѯ�豸ϵͳ״̬*/
++				sendDevStatus();
+ 				break;
+ 			case CMD_SVR_SET_CARINFO:																				/*���ó�����Ϣ*/
++				
+ 				break;
+ 			case CMD_SVR_SET_THROUGH:																				/*���ñ������̷���*/
++				
+ 				break;
++			
+         default:
+             break;
+     }  

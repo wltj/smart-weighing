@@ -1,0 +1,251 @@
+syntax = "proto2";
+//网关通信
+//package gateway;
+
+//CMD 指令为服务器主动发起
+//_CMD 指令为网关主动发起
+enum Cmd_Type {
+	_CMD_NOP = 0; //心跳，NOP指令
+	_CMD_GATEWAY_REGISTER = 1; //网关注册指令
+	_CMD_GATEWAY_LINK = 2; //网关连接指令
+	CMD_SET_WIRELESS_PARAM = 3;//设置无线参数
+	CMD_SET_WIRELESS_DETAILED_PAEAM = 4;//设置详细无线参数
+	CMD_GET_WIRELESS_PAEAM = 5;//获取无线参数
+	CMD_SET_TIME = 6; //设置时间
+	CMD_GET_TIME = 7; //获取时间
+	CMD_SET_TERM_SYS_PARAM = 8; //设置全体终端系统参数
+	CMD_SET_ONE_TERM_SYS_PARAM = 9;//设置某个终端系统运行参数
+	CMD_SET_TERM_FEED_PARAM = 10;//设置饲喂参数
+	CMD_REPORT_TERM_RECODE = 11;//上报终端记录
+	CMD_REPORT_TERM_STATUS = 12;//上报终端状态
+	CMD_REPORT_TERM_INFO = 13; //上报终端信息
+	CMD_GATEWAY_MSG_TO_SERVER = 14; //网关向服务器发消息
+	CMD_SERVER_MSG_TO_GATEWAY = 15; //服务器向网关发送消息
+	CMD_SEND_FEED_RULE = 16; // 发送饲喂规则
+	CMD_REPORT_TERM_RUN_PARAM = 17;//上传运行参数
+	CMD_UPGRADE_GATEWAY = 18;//网关升级
+	CMD_UPGRADE_TERM = 19; //终端升级
+	CMD_UPGRADE_ONE_TERM = 20; //升级某个终端
+}
+
+enum Error_Code{
+	NO_ERROR = 0;
+	ERROR_SAME_MACID = 1; //相同的macid
+	ERROR_PARAM = 2;	//参数错误
+}
+
+//单元类型
+enum Unit_Type {
+	UNIT_NO_TYPE = 0;
+    LACTATING = 1; //怀孕
+    GESTATING = 2; //泌乳
+}
+
+//网关类型
+enum Gateway_Type {
+	GATEWAY_NO_TYPE = 0;
+    STM32F407 = 1; //STM32F407网关
+}
+
+//终端类型
+enum Term_Type {
+	TERM_NO_TYPE = 0;
+	UNLOADER_MACHINE_GATEWAY_V3 = 1;//3代lora网关
+	UNLOADER_MACHINE_GESTATING_TERM_V7 = 2;//7代泌乳下料器
+}
+
+//服务器常用返回消息
+message Return_Common_Msg {
+	required int32 Errorcode = 1; 
+	required string Error_Msg = 2; //错误类容
+}
+
+//无线参数
+message Wireless_Param {
+	required int32 Wireless_Channel = 1; //无线信道
+	required int32 Wireless_Netid = 2; //网络id
+}
+
+//网关注册
+message Gateway_Register {
+	required string Mac_Id = 1;    //mac_id
+	required int32 Unit_Num = 2;   //单元号
+	required int32 Unit_T = 3; //单元类型
+	required int32 Unit_Term_Num = 4; //单元终端数
+	required Wireless_Param Wireless_Params = 5; //无线参数
+}
+
+message _Cmd_Gateway_Register {
+	required Gateway_Register Gateway_Register_Msg = 1;
+}
+
+//网关连接
+message Gateway_Link {
+	required string Mac_Id = 1;    //mac_id
+	required int32 Unit_Num = 2;   //单元号
+	required int32 Unit_T = 3; //单元类型
+	required int32 Unit_Term_Num = 4; //单元终端数
+	required int32 Fw = 5; //软件版本
+	required int32 Hw = 6; //硬件版本
+	required int32 Gateway_T = 7; //网关类型
+	required Wireless_Param Wireless_Params = 8; //无线参数
+}
+
+message _Cmd_Gateway_Link {
+	required Gateway_Link Gateway_Link_Msg = 1;
+}
+
+//网关无线参数
+message Gateway_Wireless_Param {
+	required Wireless_Param Wireless_Param = 1;
+}
+
+//网关无线详细参数
+message Gateway_Wireless_Detailed_Param {
+	required Wireless_Param Wireless_Params = 1;
+	required int32 Wireless_Width = 2;// 带宽
+	required int32 Wireless_Power = 3;//无线功率
+	required int32 Wireless_Spreading = 4;//扩频因子
+	required int32 Wireless_Error = 5;//有效数据
+}
+
+//时间
+message Time {
+	required int32 Year = 1;
+	required int32 Month = 2;
+	required int32 Day = 3;
+	required int32 Hour = 4;
+	required int32 Min = 5;
+	required int32 Sec = 6;
+}
+
+message Get_Time_Return {
+	required Time Times = 1;
+}
+
+//升级信息
+message Upgrade_Info_Param {
+	required int32 Term_T = 1;//终端类型
+	required int32 Upgrade_Fw = 2;//升级的版本
+	required int32 Upgrade_File_size = 3;//文件大小
+	required int32 Upgrade_File_Crc = 4;//文件校验码
+	required string Upgrade_Url = 5;//升级文件下载地址
+}
+
+message Feed_Time {
+	required int32 Hour = 1;
+	required int32 Min = 2;
+}
+
+message Feed_Meal_Param {	//饲喂每顿参数
+	required Feed_Time Start_Time = 1;
+	required int32 Feed_Length = 2; // 下料时长
+	required int32 Clean_Food_Length = 3; //清料时长
+	required int32 Clean_Water_Length = 4; //清水时长
+	required int32 food_Value = 5; //每顿饲喂总量
+}
+
+//饲喂参数
+message Feed_Param {
+	required int32 Term_Addr = 1;	//终端地址
+	required int32 Term_Sys_Run = 2; //是否工作,0工作，非0不工作
+	required int32 Water_Food_Ratio = 3;// 水料比
+	required int32 Forced_Food = 4; //强制下料
+	required int32 Feed_Meal_Count = 5;//饲喂套餐次数
+	repeated int32 Feed_Meal_T = 6; //饲喂套餐
+	required int32 Feed_Meal_Param_T_Count = 7; //下料顿数
+	repeated Feed_Meal_Param Feed_Meal_Param_T = 8;//下料参数
+}
+
+//终端运行相关参数
+message Term_Sys_Param {
+	required int32 Feed_Speed = 1;//下料速度
+	required int32 Tail_Value = 2; //尾巴量
+	required int32 Flow_Unit_Pulse = 3; //流量计单位脉冲
+}
+
+//指定终端运行相关参数
+message One_Term_Sys_Param {
+	required int32 term_addr = 1;
+	required int32 Feed_Speed = 2;//下料速度
+	required int32 Tail_Value = 3; //尾巴量
+	required int32 Flow_Unit_Pulse = 4; //流量计单位脉冲
+}
+
+//终端运行相关数据
+message Term_Running_Data {
+	required int32 Day_Total_Feed_Value = 1; //今日总饲喂量
+	required int32 Day_Total_Water_Value = 2; //总下水量
+	repeated int32 Feed_Value = 3; //每顿饲喂量
+	repeated int32 Advance_Time = 4; //超前时间
+	repeated int32 Delay_Time = 5; //延后时间
+	repeated int32 Jump	= 6; //跳过
+	repeated int32 Touch = 7; // 饲喂期间有效触碰数
+	repeated Feed_Time Start_Time = 8; //每顿下料实际开始时间
+	repeated Feed_Time End_Time = 9; //每顿下料实际结束时间
+}
+
+
+
+//上报记录表
+message Recode_List {
+	required int32 Term_Addr = 1; //终端地址
+	required int32 Report_Type = 2; //记录类型
+	required string Time = 3; //时间
+	required int32 data = 4; //数据
+}
+
+//上报终端状态
+message TERM_STATUS {
+	required int32 Term_Addr = 1; //终端地址
+	required int32 Term_status = 4; //终端状态
+}
+
+//终端信息
+message Term_Info {
+	required int32 Term_Addr = 1; //终端地址
+	required string Term_ID = 2; //终端ID
+	required int32 Term_Hw = 3;
+	required int32 Term_Fw = 4;
+	required int32 Term_Type = 5;
+	required int32 Pig_Age = 6;
+}
+
+//通用消息消息体
+message Com_Messgage {
+	required int32 MSG_TYPE = 1; //消息类型
+	required string MSG = 2;//消息体
+}
+
+//饲喂规则表
+message Feed_Rule {
+	required int32 Version = 1; //规则版本
+	required string Rule = 2; //规则
+}
+
+//网关升级信息
+message Gateway_Upgrade_File {
+	required string Version = 1;//升级版本
+	required int32	Gateway_Type = 2; //网关类型
+	required string Url = 3; 	//升级文件下载连接
+}
+
+//终端升级信息
+message Term_Upgrade_File {
+	required int32 Version = 1;	//升级版本
+	required int32 Term_Type= 2;	//终端类型
+	required int32 File_Size = 3;	//升级文件大小
+	required int32 Crc = 4;		//升级文件crc信息
+	required string Url = 5; 	//升级文件下载连接
+}
+
+
+
+
+
+
+
+
+
+
+

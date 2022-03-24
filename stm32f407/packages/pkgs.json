@@ -1,0 +1,67 @@
+[
+ {
+  "path": "/packages/iot/pahomqtt", 
+  "ver": "v1.1.0", 
+  "name": "PAHOMQTT"
+ }, 
+ {
+  "path": "/packages/iot/webclient", 
+  "ver": "v2.1.2", 
+  "name": "WEBCLIENT"
+ }, 
+ {
+  "path": "/packages/iot/cJSON", 
+  "ver": "v1.0.2", 
+  "name": "CJSON"
+ }, 
+ {
+  "path": "/packages/iot/nanopb", 
+  "ver": "v1.0.0", 
+  "name": "NANOPB"
+ }, 
+ {
+  "path": "/packages/iot/netutils", 
+  "ver": "v1.1.0", 
+  "name": "NETUTILS"
+ }, 
+ {
+  "path": "/packages/iot/ota_downloader", 
+  "ver": "latest", 
+  "name": "OTA_DOWNLOADER"
+ }, 
+ {
+  "path": "/packages/iot/tcpserver", 
+  "ver": "latest", 
+  "name": "TCPSERVER"
+ }, 
+ {
+  "path": "/packages/tools/EasyFlash", 
+  "ver": "v4.0.0", 
+  "name": "EASYFLASH"
+ }, 
+ {
+  "path": "/packages/system/fal", 
+  "ver": "v0.4.0", 
+  "name": "FAL"
+ }, 
+ {
+  "path": "/packages/peripherals/u8g2", 
+  "ver": "c-latest", 
+  "name": "U8G2"
+ }, 
+ {
+  "path": "/packages/peripherals/button", 
+  "ver": "v1.0.1", 
+  "name": "BUTTON"
+ }, 
+ {
+  "path": "/packages/peripherals/sx12xx", 
+  "ver": "latest", 
+  "name": "SX12XX"
+ }, 
+ {
+  "path": "/packages/peripherals/SignalLed", 
+  "ver": "latest", 
+  "name": "SIGNAL_LED"
+ }
+]
